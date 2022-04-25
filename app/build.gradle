@@ -1,0 +1,146 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.starter.easylauncher' version '5.0.1'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.example.demo"
+        manifestPlaceholders = [appLabel: "@string/app_name"]
+        minSdk 21
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions 'platform'
+
+    productFlavors {
+        dev {
+            dimension 'platform'
+            applicationIdSuffix ".dev"
+            manifestPlaceholders = [appLabel: "@string/app_name_dev"]
+        }
+
+        alpha {
+            dimension 'platform'
+            applicationIdSuffix ".alpha"
+            manifestPlaceholders = [appLabel: "@string/app_name_alpha"]
+        }
+
+        beta {
+            dimension 'platform'
+            applicationIdSuffix ".beta"
+            manifestPlaceholders = [appLabel: "@string/app_name_beta"]
+        }
+
+        prod {
+            dimension 'platform'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.2.0-alpha06'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // Koin main features for Android
+    implementation "io.insert-koin:koin-android:$koin_version"
+    // No more koin-android-viewmodel, koin-android-scope, koin-android-fragment
+
+    // Java Compatibility
+    implementation "io.insert-koin:koin-android-compat:$koin_version"
+    // Jetpack WorkManager
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    // Jetpack Compose
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+
+    // Retrofit
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+
+    // Compose
+    implementation 'androidx.compose.ui:ui:1.0.2'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.0.2'
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation 'androidx.compose.foundation:foundation:1.0.2'
+    // Material Design
+    implementation 'androidx.compose.material:material:1.0.2'
+    // Material design icons
+    implementation 'androidx.compose.material:material-icons-core:1.0.2'
+    implementation 'androidx.compose.material:material-icons-extended:1.0.2'
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.3.1'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-beta01'
+    // Integration with observables
+    implementation 'androidx.compose.runtime:runtime-livedata:1.0.2'
+    implementation 'androidx.compose.runtime:runtime-rxjava2:1.0.2'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.2'
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.0.2'
+    // Constraint layout compose
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
+    // coil
+    implementation ("io.coil-kt:coil-compose:1.3.0")
+    // required to avoid crash on Android 12 API 31
+    implementation 'androidx.work:work-runtime-ktx:2.7.0-beta01'
+}
+
+easylauncher {
+    defaultFlavorNaming true // Use flavor name for default ribbon, instead of the type name
+
+    productFlavors {
+        dev {
+            filters = redRibbonFilter()
+        }
+        alpha {
+            filters = orangeRibbonFilter()
+        }
+        beta {
+            filters = blueRibbonFilter()
+        }
+        prod {
+            filters = greenRibbonFilter()
+        }
+    }
+}
